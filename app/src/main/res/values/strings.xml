@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Rent</string>
+    <string-array name="aerial">
+        <item>Telescopic Boom Lifts</item>
+        <item>Towable lifts</item>
+        <item>Articulated Boom Lift</item>
+        <item>Scissor Lifts</item>
+    </string-array>
+    <string-array name="earth">
+        <item>Backhoes</item>
+        <item>Dozers</item>
+        <item>Excavators</item>
+        <item>Loaders</item>
+        <item>Skid Steer</item>
+        <item>Tractors</item>
+        <item>Vaccum Excavators</item>
+        <item>Attachments</item>
+    </string-array>
+    <string-array name="forklifts">
+        <item>Boom</item>
+        <item>Cranes</item>
+        <item>Lifts</item>
+        <item>Industrial Forklift</item>
+        <item>Telehandler</item>
+        <item>Carry Deck Crane</item>
+        <item>Crane Rough Terrain</item>
+    </string-array>
+    <string-array name="concrete">
+        <item>Concrete Batching Plant</item>
+        <item>Concrete Pump</item>
+        <item>Transit Mixer</item>
+        <item>Self Loading Mixer</item>
+        <item>Concrete Boom Placer</item>
+        <item>Walk Behind Power Trowel</item>
+        <item>Walk Behind Concrete Saw</item>
+        <item>Concrete Roller Screed</item>
+        <item>Core Drill Rig</item>
+        <item>Handheld Concrete Saw</item>
+        <item>Ride On Concrere Power Trowel</item>
+    </string-array>
+    <string-array name="compaction">
+        <item>Ride on Vibratory Roller - Single Drum</item>
+        <item>Ride on Vibratory Roller - Double Drum</item>
+        <item>Ride on Single Drum Roller</item>
+        <item>Vibratory Plate Compactor</item>
+        <item>Jumping Jack Rammer</item>
+    </string-array>
+    <string-array name="power">
+        <item>Mobile Generator</item>
+        <item>Portable Generator</item>
+        <item>Portable Welder</item>
+        <item>Towable Light Tower</item>
+        <item>Forced Air Heater</item>
+    </string-array>
+    <string-array name="small">
+        <item>Water Pump</item>
+        <item>Surface Grinder</item>
+        <item>Handheld Rotary Hammer Drill</item>
+        <item>Breaker Hammer</item>
+        <item>Rebar Tying tool</item>
+        <item>Handheld Bend Saw</item>
+    </string-array>
+    <string-array name="safety">
+        <item>Scaffolding</item>
+        <item>Trench Box</item>
+    </string-array>
+    <string-array name="trailers">
+        <item>Dump Trailer</item>
+        <item>Enclosed Containers</item>
+        <item>Office trailers</item>
+    </string-array>
+</resources>
