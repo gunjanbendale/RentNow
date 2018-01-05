@@ -30,6 +30,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -188,10 +190,10 @@ public class RentalRequest extends AppCompatActivity {
     public class SendRequest extends AsyncTask<String, Void, String> {
         protected void onPreExecute(){}
         protected String doInBackground(String... arg0) {
-
+            Date currentTime = Calendar.getInstance().getTime();
             try{
                 //Change your web app deployed URL or u can use this for attributes (name, country)
-                URL url = new URL("https://script.google.com/macros/s/AKfycbyxEzuEWJi6wJCoEuNgpqCrEaFlqbVjWKa3VCNMYJJiP0VchTBa/exec");
+                URL url = new URL("https://script.google.com/macros/s/AKfycbwW1aZ8GFx9fqqdtcDSdV9yPzgUvNkoI3JtPLqblnotyRwphS--/exec");
 
                 JSONObject postDataParams = new JSONObject();
 
@@ -203,12 +205,13 @@ public class RentalRequest extends AppCompatActivity {
 
                 String id= "1BZGoRO53OVWDNbM0y1wKgdRRn0_WH5NU2Q2xAB89xb0";
 
-                postDataParams.put("product",product);
+                postDataParams.put("name",product);
                 postDataParams.put("quantity",quantity);
                 postDataParams.put("startdate",startdate);
                 postDataParams.put("enddate",enddate);
                 postDataParams.put("mobile",mobile);
                 postDataParams.put("username",username);
+                postDataParams.put("time",currentTime);
                 postDataParams.put("id",id);
 
                 Log.e("params",postDataParams.toString());
