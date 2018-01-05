@@ -28,5 +28,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.github.bumptech.glide:glide:4.4.0'
     implementation 'com.android.support:appcompat-v7:27.0.2'
-
+    compile 'com.msg91.sendotp.library:library:3.1'
 }

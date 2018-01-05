@@ -71,6 +71,9 @@ public class SubMachineActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             moveTaskToBack(true);
+
+            finish();
+            startActivity(new Intent(SubMachineActivity.this,MainActivity.class));
             return true;
         }
         return super.onKeyDown(keyCode, event);
