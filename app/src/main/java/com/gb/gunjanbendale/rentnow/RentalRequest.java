@@ -95,9 +95,7 @@ public class RentalRequest extends AppCompatActivity {
              enddate=dateend.getText().toString().trim();
              product=product_info.getText().toString().trim();
              new SendRequest().execute();*/
-             Intent intent=new Intent(RentalRequest.this,MobileNoVerActivity.class);
-             finish();
-             startActivity(intent);
+
 
             }
         });
@@ -261,7 +259,9 @@ public class RentalRequest extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
+            Intent intent=new Intent(RentalRequest.this,MobileNoVerActivity.class);
+            finish();
+            startActivity(intent);
         }
     }
 
