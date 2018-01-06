@@ -2,12 +2,14 @@ package com.gb.gunjanbendale.rentnow;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,8 +88,8 @@ public class VerificationActivity extends AppCompatActivity implements
     void initiateVerification(boolean skipPermissionCheck) {
         Intent intent = getIntent();
         if (intent != null) {
-            String phoneNumber = intent.getStringExtra(MobileNoVerActivity.INTENT_PHONENUMBER);
-            String countryCode = intent.getStringExtra(MobileNoVerActivity.INTENT_COUNTRY_CODE);
+            String phoneNumber = intent.getStringExtra(RentalRequest.INTENT_PHONENUMBER);
+            String countryCode = intent.getStringExtra(RentalRequest.INTENT_COUNTRY_CODE);
             TextView phoneText = (TextView) findViewById(R.id.numberText);
             phoneText.setText("+" + countryCode + phoneNumber);
             createVerification(phoneNumber, skipPermissionCheck, countryCode);
@@ -166,9 +168,28 @@ public class VerificationActivity extends AppCompatActivity implements
         hideKeypad();
         hideProgressBarAndShowMessage(R.string.verified);
         showCompleted();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to book other equipment ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        startActivity(new Intent(VerificationActivity.this,MainActivity.class));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Verification Successful");
+        alert.show();
+
         Toast.makeText(this,"Verification Successful",Toast.LENGTH_LONG);
-        finish();
-        startActivity(new Intent(VerificationActivity.this,MainActivity.class));
+
     }
 
     @Override

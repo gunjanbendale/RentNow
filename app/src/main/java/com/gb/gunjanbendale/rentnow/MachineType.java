@@ -4,11 +4,11 @@ package com.gb.gunjanbendale.rentnow;
 
 public class MachineType {
     String Name;
-    private int thumbnail;
+    String imageURL;
 
-    public MachineType(String N, int t){
+    public MachineType(String N, String imageURL){
         Name=N;
-        thumbnail= t;
+        this.imageURL=imageURL;
     }
 
     public String getName(){
@@ -19,11 +19,11 @@ public class MachineType {
         Name=n;
     }
 
-    public int getThumbnail() {
-        return thumbnail;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

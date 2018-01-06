@@ -1,7 +1,11 @@
 package com.gb.gunjanbendale.rentnow;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,18 +15,26 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SubMachineActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    HorizontalAdapter adapter;
-    private List<MachineType> data;
+    DataAdapter adapter;
+    String URL = "http://geekandsundry.com/wp-content/uploads/2016/11/JPEG-Promo-2-3.jpg";
+    ProgressDialog mProgressDialog;
+
+    private ArrayList<MachineType> data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +42,13 @@ public class SubMachineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i=getIntent();
         String s=i.getStringExtra("id");
-
         data = filldatas(s);
-
-        adapter= new HorizontalAdapter(data,getApplication());
+        adapter= new DataAdapter(getApplicationContext(),data);
         recyclerView=(RecyclerView) findViewById(R.id.recyclerViewSub);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(adapter);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -48,15 +59,17 @@ public class SubMachineActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public List<MachineType> filldatas(String S){
-        List<MachineType> data = new ArrayList<>();
+
+    public ArrayList<MachineType> filldatas(String S){
+        ArrayList<MachineType> data = new ArrayList<>();
         String s=S.toLowerCase();
         int sa=getResources().getIdentifier(s,"array",getPackageName());
         String[] array=getResources().getStringArray(sa);
+
         int i=0;
         while(i<array.length){
             String x=S.toLowerCase()+i;
-            int r=getResources().getIdentifier(x,"drawable",getPackageName());
+            String r="https://drive.google.com/open?id=1CbhQ7PHAh5DBl_iQ394uMmFbO8dpjGsP/" + S.toLowerCase() + i + ".png";
             data.add(new MachineType(array[i],r));
             i++;
         }
@@ -67,6 +80,7 @@ public class SubMachineActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
@@ -79,68 +93,58 @@ public class SubMachineActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+        private ArrayList<MachineType> machineTypes;
+        private Context context;
 
-    public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
-
-
-        List<MachineType> horizontalList = Collections.emptyList();
-        Context context;
-
-
-        public HorizontalAdapter(List<MachineType> horizontalList, Context context) {
-            this.horizontalList = horizontalList;
+        public DataAdapter(Context context,ArrayList<MachineType> machineTypes) {
             this.context = context;
-        }
+            this.machineTypes=machineTypes;
 
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-
-            ImageView imageView;
-            TextView txtview;
-            public MyViewHolder(View view) {
-                super(view);
-                imageView=(ImageView) view.findViewById(R.id.machineimg);
-                txtview=(TextView) view.findViewById(R.id.machinetxt);
-            }
-        }
-
-
-
-        @Override
-        public HorizontalAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.machine_card, parent, false);
-
-            return new HorizontalAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final HorizontalAdapter.MyViewHolder holder, final int position) {
+        public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.machine_card, viewGroup, false);
+            return new ViewHolder(view);
+        }
 
-            holder.imageView.setImageResource(horizontalList.get(position).getThumbnail());
-            holder.txtview.setText(horizontalList.get(position).getName());
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, final int i) {
 
-            holder.imageView.setOnClickListener(new View.OnClickListener() {
+            viewHolder.machinename.setText(machineTypes.get(i).getName());
+            Picasso.with(context).load(machineTypes.get(i).getImageURL()).resize(120, 60).into(viewHolder.img_machine);
+            viewHolder.img_machine.setOnClickListener(new View.OnClickListener() {
                 @Override
 
                 public void onClick(View v) {
-                    String list = horizontalList.get(position).getName().toString();
-                    int img = horizontalList.get(position).getThumbnail();
+                    String list = machineTypes.get(i).getName().toString();
+                    String img = machineTypes.get(i).getImageURL();
                     Intent intent=new Intent(getApplicationContext(),RentalRequest.class);
                     intent.putExtra("id",list);
                     intent.putExtra("thumbnail",img);
                     finish();
                     startActivity(intent);
+
                 }
-
             });
-
         }
-
 
         @Override
-        public int getItemCount()
-        {
-            return horizontalList.size();
+        public int getItemCount() {
+            return machineTypes.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            TextView machinename;
+            ImageView img_machine;
+            public ViewHolder(View view) {
+                super(view);
+
+                machinename = (TextView)view.findViewById(R.id.machinetxt);
+                img_machine = (ImageView)view.findViewById(R.id.machineimg);
+            }
         }
     }
+
 }

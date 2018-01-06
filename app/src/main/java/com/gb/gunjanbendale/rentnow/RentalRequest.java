@@ -1,7 +1,10 @@
 package com.gb.gunjanbendale.rentnow;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +16,15 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -41,7 +47,11 @@ public class RentalRequest extends AppCompatActivity {
     CardView cardView;
     TextView product_info;
     ImageView imageView;
+    EditText mobileno;
+    DatePickerDialog datePickerDialog;
     String quantity,mobile,startdate,enddate,product,username;
+    public static final String INTENT_PHONENUMBER = "phonenumber";
+    public static final String INTENT_COUNTRY_CODE = "code";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +61,19 @@ public class RentalRequest extends AppCompatActivity {
 
         Intent mIntent = getIntent();
         String text = mIntent.getStringExtra("id");
-        int img = mIntent.getIntExtra("thumbnail", R.drawable.ic_launcher_background);
-        machineType = new MachineType(text, img);
+        String img = mIntent.getStringExtra("thumbnail");
+        machineType = new MachineType(text, "https://drive.google.com/drive/folders/1CbhQ7PHAh5DBl_iQ394uMmFbO8dpjGsP/"+"aerial.png");
         cardView = (CardView) findViewById(R.id.machine);
         product_info = (TextView) findViewById(R.id.machinetype);
         product_info.setText(text);
         imageView = (ImageView) findViewById(R.id.machineimg);
-        imageView.setImageResource(img);
+        Picasso.with(getApplicationContext()).load(img).into(imageView);
+        datePickerDialog= new DatePickerDialog(this);
         final TextView Quantity=(TextView)findViewById(R.id.quantity);
         final EditText datestart=(EditText)findViewById(R.id.startdate);
         final EditText dateend=(EditText) findViewById(R.id.completion_date);
-        final EditText mobileno=(EditText) findViewById(R.id.mobileno);
-        final EditText Name_us=(EditText) findViewById(R.id.Name);
+        mobileno=(EditText) findViewById(R.id.mobileno);
+        final EditText Name_us=(EditText) findViewById(R.id.name);
         final Button plus = (Button) findViewById(R.id.add_button);
         Button minus = (Button) findViewById(R.id.minus_button);
 
@@ -82,6 +93,52 @@ public class RentalRequest extends AppCompatActivity {
                     int b = a - 1;
                     Quantity.setText(Integer.toString(b));
                 } else Quantity.setText(Quantity.getText());
+            }
+        });
+        datestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(RentalRequest.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                datestart.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+        dateend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(RentalRequest.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                dateend.setText(dayOfMonth + "/"
+                                        + (monthOfYear + 1) + "/" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
             }
         });
         Button submit=(Button)findViewById(R.id.submit);
@@ -259,7 +316,9 @@ public class RentalRequest extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Intent intent=new Intent(RentalRequest.this,MobileNoVerActivity.class);
+            Intent intent=new Intent(RentalRequest.this,VerificationActivity.class);
+            intent.putExtra(INTENT_PHONENUMBER, mobileno.getText().toString().replaceAll("\\D", "").trim());
+            intent.putExtra(INTENT_COUNTRY_CODE,"91");
             finish();
             startActivity(intent);
         }
@@ -288,6 +347,13 @@ public class RentalRequest extends AppCompatActivity {
 
         }
         return result.toString();
+    }
+
+    void gotoDialer(View view)
+    {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:987654321"));
+        startActivity(intent);
     }
 
 }

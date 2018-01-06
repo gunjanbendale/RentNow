@@ -1,29 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="175dp"
-    android:layout_height="200dp"
+    android:layout_height="190dp"
+    android:background="@color/background"
     android:paddingTop="10dp"
-    android:paddingLeft="6dp"
+    android:paddingLeft="10dp"
     android:paddingRight="6dp">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:background="@color/background"
         android:elevation="3dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/background">
             <ImageView
                 android:id="@+id/machineimg"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="140dp"
                 android:clickable="true"
                 android:scaleType="fitXY" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/machinetxt"
+                android:textColor="@color/font"
                 android:layout_below="@+id/machineimg"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:textSize="15sp"/>
         </RelativeLayout>
 

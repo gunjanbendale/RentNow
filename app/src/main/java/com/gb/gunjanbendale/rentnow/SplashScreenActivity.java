@@ -11,7 +11,7 @@ import android.view.Window;
 public class SplashScreenActivity extends Activity {
 
     // Set Duration of the Splash Screen
-    long Delay = 2000;
+    long Delay = 1500;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,10 @@ public class SplashScreenActivity extends Activity {
             @Override
             public void run() {
                 // Close SplashScreenActivity.class
-                finish();
-
                 // Start MainActivity.class
                 Intent myIntent = new Intent(SplashScreenActivity.this,
                         MainActivity.class);
+                finish();
                 startActivity(myIntent);
             }
         };

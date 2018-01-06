@@ -24,7 +24,6 @@
         <activity
             android:name=".RentalRequest"
             android:label="Complete Request" />
-        <activity android:name=".MobileNoVerActivity" />
         <activity android:name=".VerificationActivity" />
 
         <meta-data
